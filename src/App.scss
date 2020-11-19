@@ -2,6 +2,22 @@
   text-align: center;
 }
 
+.top-menu{
+  display: flex;  
+  justify-content: center;
+  a{    
+    &:after{
+      content: '|';
+      padding: 10px;
+    }
+    &:last-child:after{
+      content: '';
+    }
+  }
+
+  
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
