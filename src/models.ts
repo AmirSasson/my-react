@@ -7,7 +7,7 @@ export interface IStock {
 }
 
 export interface IStocksListModel {
-    stocks: IStock[];
-    investName: string;
+    // stocks: IStock[];
+    // investName: string;
     handleNewStock: (s: IStock) => any;
 }
