@@ -5,26 +5,26 @@ import { Button, Container, Form, ListGroup } from "react-bootstrap";
 import { connect, ConnectedComponent } from "react-redux";
 import { IStock, IStocksListModel } from "./models";
 import { StockComponent } from "./StockComponent";
-import { stockStore } from "./stores/stock-store";
+import { StockAction, IStockAction, stockStore } from "./stores/stock-store";
 import { uuidv4 } from "./utils";
 
-export class StocksListComponent extends Component<IStocksListModel, { stocks: any[], stockName: string }> {
-    constructor(props: IStocksListModel) {
+class StocksListComponent extends Component<any, any> {
+    constructor(props: any) {
         super(props);
-        this.state = { stockName: "fsdf", stocks: [] };
+        this.state = { stockName: "fsdf" };
         this.handleNewStockEvent = this.handleNewStockEvent.bind(this);
     }
-    public componentDidMount() {
-        console.log("stocks", stockStore.getState().stocks);
-        stockStore.subscribe(() => {
-            console.log("stocks", stockStore.getState().stocks);
-            this.setState({ stocks: stockStore.getState().stocks });
-        });
-    }
+    // public componentDidMount() {
+    //     console.log("stocks", stockStore.getState().stocks);
+    //     stockStore.subscribe(() => {
+    //         console.log("stocks", stockStore.getState().stocks);
+    //         this.setState({ stocksa: stockStore.getState().stocks });
+    //     });
+    // }
 
     public async handleNewStockEvent(event: any) {
         event.preventDefault();
-        await this.props.handleNewStock({ name: this.state.stockName, val: 1.1, id: uuidv4() });
+        stockStore.dispatch({ data: { name: this.state.stockName, val: 1.1, id: uuidv4() } as IStock, type: StockAction.Add } as IStockAction)
         this.setState({ stockName: "" });
     }
 
@@ -40,7 +40,7 @@ export class StocksListComponent extends Component<IStocksListModel, { stocks: a
                 {/* <FormText inputMode="search" onInput={(e) => this.state.}></FormText> */}
                 <Button disabled={!this.state.stockName} onClick={(e) => this.handleNewStockEvent(e)}>Add new Stock</Button>
                 <ListGroup>
-                    {this.state.stocks.map((s, i) => (
+                    {this.props.stocks.map((s: any, i: any) => (
                         <ListGroup.Item key={i} >
                             <StockComponent stock={s} ></StockComponent>
                         </ListGroup.Item>
@@ -51,4 +51,13 @@ export class StocksListComponent extends Component<IStocksListModel, { stocks: a
     }
 
 }
-// export default connect()(StocksListComponent);
+
+function mapStateToProps(state: any): any {
+    return { stocks: state.stocks }
+}
+
+// function mapDispatchToProps(dispatch: Dispatch<any>): any {
+//     return bindActionCreators({ someAction: actionCreators.someAction }, dispatch)
+// }
+
+export default connect(mapStateToProps)(StocksListComponent);

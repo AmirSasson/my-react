@@ -12,8 +12,9 @@ import "./App.scss";
 import logo from "./logo.svg";
 import { IStock, IStocksListModel } from "./models";
 import { StockExplorer } from "./StockExplorer";
-import { StocksListComponent } from "./StocksListComponent";
-import { IStockAddAction, stockStore } from "./stores/stock-store";
+import StocksListComponent from "./StocksListComponent";
+import { stockStore } from "./stores/stock-store";
+import TestComp from "./TestComp";
 import { uuidv4 } from "./utils";
 
 // tslint:disable:max-line-length
@@ -33,18 +34,19 @@ export class App extends React.Component<any, { stocks: IStock[] }> {
   //   });
   // }
 
-  public handleNewStock = async (s: IStock) => {
-    stockStore.dispatch({ data: s } as IStockAddAction);
-    // this.setState((prev: { stocks: IStock[] }) => {
-    //   return { stocks: [...prev.stocks, s] } as IStocksListModel;
-    // });
-  }
+  // public handleNewStock = async (s: IStock) => {
+  //   stockStore.dispatch({ data: s } as IStockAddAction);
+  //   // this.setState((prev: { stocks: IStock[] }) => {
+  //   //   return { stocks: [...prev.stocks, s] } as IStocksListModel;
+  //   // });
+  // }
 
   public render() {
     return (
       <div className="App" >
 
         <Provider store={stockStore} >
+          <TestComp></TestComp>
           <Router>
             <Container>
               <div className="top-menu">
@@ -55,7 +57,7 @@ export class App extends React.Component<any, { stocks: IStock[] }> {
 
               <Switch>
                 <Route exact path="/">
-                  <StocksListComponent handleNewStock={this.handleNewStock}></StocksListComponent>
+                  <StocksListComponent></StocksListComponent>
 
                 </Route>
                 <Route exact path="/about">
@@ -65,13 +67,14 @@ export class App extends React.Component<any, { stocks: IStock[] }> {
                 <Route path="/stock/:stockId" render={(props) =>
                   <>
                     <Button onClick={(e) => window.history.back()}>Back</Button>
-                    <StockExplorer {...props.match.params} stocks={this.state.stocks} />
+                    <StockExplorer {...props.match.params} />
                   </>} />
               </Switch>
             </Container>
           </Router>
+        </Provider>
 
-          {/* <header className="App-header">
+        {/* <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.tsx</code> and save to reload.
@@ -85,7 +88,6 @@ export class App extends React.Component<any, { stocks: IStock[] }> {
             Learn React
           </a>
         </header> */}
-        </Provider>
       </div>
     );
   }

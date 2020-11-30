@@ -5,6 +5,7 @@ import { uuidv4 } from "../utils";
 
 export enum StockAction {
     Add,
+    Delete
 }
 
 const INITIAL_STATE: { stocks: IStock[] } = {
@@ -15,16 +16,19 @@ const INITIAL_STATE: { stocks: IStock[] } = {
     ],
 };
 
-export interface IStockAddAction extends Action<StockAction> {
+export interface IStockAction extends Action<StockAction> {
+    type: StockAction;
     data: IStock;
 }
 
-export const stockStore: Store<{ stocks: IStock[] }, IStockAddAction> = createStore<{ stocks: IStock[] }, IStockAddAction, any, any>(
+export const stockStore: Store<{ stocks: IStock[] }, Action<StockAction>> = createStore<{ stocks: IStock[] }, Action<StockAction>, any, any>(
     (state, action) => {
         if (action.type === StockAction.Add) {
-            return { stocks: [...(state?.stocks || []), action.data] };
+            return { stocks: [...(state?.stocks || []), (action as IStockAction).data] };
+        }
+        else if (action.type === StockAction.Delete) {
+            return { stocks: (state?.stocks || []).filter(s => s.id !== (action as IStockAction).data.id) };
         }
         return INITIAL_STATE;
-    },
-    INITIAL_STATE,
+    }, INITIAL_STATE
 );

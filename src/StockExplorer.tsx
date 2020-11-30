@@ -6,6 +6,8 @@ import { RouteComponentProps } from "react-router";
 import { BrowserRouter as Router, useParams, withRouter } from "react-router-dom";
 import { IStock } from "./models";
 import "./StockComponent.scss";
+import { stockStore } from "./stores/stock-store";
+
 
 // interface IStockExplorerProps extends RouteComponentProps<{ stockId: string }> {
 //     stocks: any;
@@ -33,7 +35,7 @@ export class StockExplorer extends React.Component<{ stocks: IStock[], stockId: 
 
     public render() {
         const id = this.props.stockId;
-        this.stock = this.props.stocks.find((s: IStock) => s.id === id)!;
+        this.stock = stockStore.getState().stocks.find((s: IStock) => s.id === id)!;
         return (
 
             <div className="stock-item">
