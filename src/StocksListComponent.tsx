@@ -6,7 +6,7 @@ import { connect, ConnectedComponent } from "react-redux";
 import { IStock, IStocksListModel } from "./models";
 import { StockComponent } from "./StockComponent";
 import { FinanceService } from "./stores/finance.service";
-import { IStockAction, StockAction, stockStore } from "./stores/stock-store";
+import { IStockAction, StockAction, StockActions, stockStore } from "./stores/stock-store";
 import { uuidv4 } from "./utils";
 
 interface IStocksListState { stockName?: string; stocks?: IStock[]; errorMsg?: string; }
@@ -28,8 +28,8 @@ class StocksListComponent extends Component<any, IStocksListState> {
     public async handleNewStockEvent(event: any) {
         event.preventDefault();
         try {
-            const stock = await new FinanceService().getStockBySymbol(this.state.stockName!);
-            stockStore.dispatch({ data: stock, type: StockAction.Add });
+            stockStore.dispatch(StockActions.fetchStock(this.state.stockName!));
+
             this.setState({ stockName: "", errorMsg: undefined });
         } catch (error) {
             this.setState({ errorMsg: `unable to find stock with symbol ${this.state.stockName}` });

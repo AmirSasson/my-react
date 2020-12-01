@@ -1,11 +1,13 @@
 
+import { faCoffee, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Component } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { IStock } from "./models";
 import "./StockComponent.scss";
-import { IStockAction, StockAction, stockStore } from "./stores/stock-store";
+import { IStockAction, StockAction, StockActions, stockStore } from "./stores/stock-store";
 
 export class StockComponent extends Component<{ stock: IStock }> {
 
@@ -20,7 +22,9 @@ export class StockComponent extends Component<{ stock: IStock }> {
                 <div>{this.props.stock.symbol}</div>
                 <div>{this.props.stock.regularMarketPrice}</div>
                 <Link to={`/stock/${this.props.stock.symbol}`}>Explore</Link>
-                <Button onClick={(e) => stockStore.dispatch({ data: this.props.stock, type: StockAction.Delete } as IStockAction)}>Delete</Button>
+
+                <FontAwesomeIcon className="action-icon" onClick={(e) => stockStore.dispatch(StockActions.deleteStock(this.props.stock))} icon={faTrash} />
+
             </div>
 
         );
