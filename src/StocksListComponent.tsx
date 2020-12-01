@@ -5,10 +5,12 @@ import { Button, Container, Form, ListGroup } from "react-bootstrap";
 import { connect, ConnectedComponent } from "react-redux";
 import { IStock, IStocksListModel } from "./models";
 import { StockComponent } from "./StockComponent";
-import { StockAction, IStockAction, stockStore } from "./stores/stock-store";
+import { IStockAction, StockAction, stockStore } from "./stores/stock-store";
 import { uuidv4 } from "./utils";
 
-class StocksListComponent extends Component<any, any> {
+interface IStocksListState { stockName?: string; stocks?: IStock[]; }
+
+class StocksListComponent extends Component<any, IStocksListState> {
     constructor(props: any) {
         super(props);
         this.state = { stockName: "fsdf" };
@@ -24,7 +26,7 @@ class StocksListComponent extends Component<any, any> {
 
     public async handleNewStockEvent(event: any) {
         event.preventDefault();
-        stockStore.dispatch({ data: { name: this.state.stockName, val: 1.1, id: uuidv4() } as IStock, type: StockAction.Add } as IStockAction)
+        stockStore.dispatch({ data: { name: this.state.stockName, val: Math.round(Math.random() * 10 * 100) / 100, id: uuidv4() }, type: StockAction.Add });
         this.setState({ stockName: "" });
     }
 
@@ -52,8 +54,8 @@ class StocksListComponent extends Component<any, any> {
 
 }
 
-function mapStateToProps(state: any): any {
-    return { stocks: state.stocks }
+function mapStateToProps(state: any): IStocksListState {
+    return { stocks: state.stocks };
 }
 
 // function mapDispatchToProps(dispatch: Dispatch<any>): any {

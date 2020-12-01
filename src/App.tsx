@@ -46,7 +46,6 @@ export class App extends React.Component<any, { stocks: IStock[] }> {
       <div className="App" >
 
         <Provider store={stockStore} >
-          <TestComp></TestComp>
           <Router>
             <Container>
               <div className="top-menu">
