@@ -7,7 +7,8 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { IStock } from "./models";
 import "./StockComponent.scss";
-import { IStockAction, StockAction, StockActions, stockStore } from "./stores/stock-store";
+import { StockActions } from "./stores/Stock-actions";
+import { stockStore } from "./stores/stock-store";
 
 export class StockComponent extends Component<{ stock: IStock }> {
 

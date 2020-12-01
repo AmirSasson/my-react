@@ -5,16 +5,15 @@ import { Button, Container, Form, ListGroup } from "react-bootstrap";
 import { connect, ConnectedComponent } from "react-redux";
 import { IStock, IStocksListModel } from "./models";
 import { StockComponent } from "./StockComponent";
-import { FinanceService } from "./stores/finance.service";
-import { IStockAction, StockAction, StockActions, stockStore } from "./stores/stock-store";
-import { uuidv4 } from "./utils";
+import { StockActions } from "./stores/Stock-actions";
+import { stockStore } from "./stores/stock-store";
 
 interface IStocksListState { stockName?: string; stocks?: IStock[]; errorMsg?: string; }
 
 class StocksListComponent extends Component<any, IStocksListState> {
     constructor(props: any) {
         super(props);
-        this.state = { stockName: "fsdf" };
+        this.state = { stockName: "" };
         this.handleNewStockEvent = this.handleNewStockEvent.bind(this);
     }
     // public componentDidMount() {
@@ -64,7 +63,7 @@ class StocksListComponent extends Component<any, IStocksListState> {
 }
 
 function mapStateToProps(state: any): IStocksListState {
-    return { stocks: state.stocks };
+    return { stocks: state.stocksActions.stocks };
 }
 
 // function mapDispatchToProps(dispatch: Dispatch<any>): any {

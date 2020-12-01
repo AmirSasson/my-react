@@ -34,7 +34,7 @@ export class StockExplorer extends React.Component<{ stocks: IStock[], stockSymb
 
     public render() {
         const stockSymbol = this.props.stockSymbol;
-        this.stock = stockStore.getState().stocks.find((s: IStock) => s.symbol === stockSymbol)!;
+        this.stock = stockStore.getState().stocksActions.stocks.find((s: IStock) => s.symbol === stockSymbol)!;
         return (
 
             <div className="stock-item">
