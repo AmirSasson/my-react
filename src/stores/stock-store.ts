@@ -2,18 +2,15 @@ import { ReactReduxContext } from "react-redux";
 import { Action, createStore, Store } from "redux";
 import { IStock } from "../models";
 import { uuidv4 } from "../utils";
+import { FinanceService } from "./finance.service";
 
 export enum StockAction {
     Add,
-    Delete
+    Delete,
 }
 
 const INITIAL_STATE: { stocks: IStock[] } = {
-    stocks: [
-        { name: "Stock 111", val: 1.2, id: uuidv4() },
-        { name: "Stock 222", val: 1.3, id: uuidv4() },
-        { name: "Stock 333", val: 1.4, id: uuidv4() },
-    ],
+    stocks: [],
 };
 
 export interface IStockAction extends Action<StockAction> {
@@ -25,10 +22,12 @@ export const stockStore: Store<{ stocks: IStock[] }, Action<StockAction>> = crea
     (state, action) => {
         if (action.type === StockAction.Add) {
             return { stocks: [...(state?.stocks || []), (action as IStockAction).data] };
-        }
-        else if (action.type === StockAction.Delete) {
-            return { stocks: (state?.stocks || []).filter(s => s.id !== (action as IStockAction).data.id) };
+        } else if (action.type === StockAction.Delete) {
+            return { stocks: (state?.stocks || []).filter((s) => s.id !== (action as IStockAction).data.id) };
         }
         return INITIAL_STATE;
-    }, INITIAL_STATE
+    }, INITIAL_STATE,
 );
+
+// tslint:disable-next-line:no-unused-expression
+new FinanceService();

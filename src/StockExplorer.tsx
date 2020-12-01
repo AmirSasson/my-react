@@ -8,7 +8,6 @@ import { IStock } from "./models";
 import "./StockComponent.scss";
 import { stockStore } from "./stores/stock-store";
 
-
 // interface IStockExplorerProps extends RouteComponentProps<{ stockId: string }> {
 //     stocks: any;
 // }
@@ -29,19 +28,21 @@ import { stockStore } from "./stores/stock-store";
 //     );
 // }
 
-export class StockExplorer extends React.Component<{ stocks: IStock[], stockId: string }> {
+export class StockExplorer extends React.Component<{ stocks: IStock[], stockSymbol: string }> {
 
     public stock?: IStock;
 
     public render() {
-        const id = this.props.stockId;
-        this.stock = stockStore.getState().stocks.find((s: IStock) => s.id === id)!;
+        const stockSymbol = this.props.stockSymbol;
+        this.stock = stockStore.getState().stocks.find((s: IStock) => s.symbol === stockSymbol)!;
         return (
 
             <div className="stock-item">
                 { this.stock && <>
-                    <div>{this.stock.name}</div>
-                    <div>{this.stock.val}</div>
+                    <div>{this.stock.longName}</div>
+                    <div>{this.stock.symbol}</div>
+                    <div>{this.stock.regularMarketChange}</div>
+                    <div>{this.stock.regularMarketPrice}</div>
                 </>
                 }
             </div>

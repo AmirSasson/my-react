@@ -5,10 +5,11 @@ import { Button, Container, Form, ListGroup } from "react-bootstrap";
 import { connect, ConnectedComponent } from "react-redux";
 import { IStock, IStocksListModel } from "./models";
 import { StockComponent } from "./StockComponent";
+import { FinanceService } from "./stores/finance.service";
 import { IStockAction, StockAction, stockStore } from "./stores/stock-store";
 import { uuidv4 } from "./utils";
 
-interface IStocksListState { stockName?: string; stocks?: IStock[]; }
+interface IStocksListState { stockName?: string; stocks?: IStock[]; errorMsg?: string; }
 
 class StocksListComponent extends Component<any, IStocksListState> {
     constructor(props: any) {
@@ -26,8 +27,15 @@ class StocksListComponent extends Component<any, IStocksListState> {
 
     public async handleNewStockEvent(event: any) {
         event.preventDefault();
-        stockStore.dispatch({ data: { name: this.state.stockName, val: Math.round(Math.random() * 10 * 100) / 100, id: uuidv4() }, type: StockAction.Add });
-        this.setState({ stockName: "" });
+        try {
+            const stock = await new FinanceService().getStockBySymbol(this.state.stockName!);
+            stockStore.dispatch({ data: stock, type: StockAction.Add });
+            this.setState({ stockName: "", errorMsg: undefined });
+        } catch (error) {
+            this.setState({ errorMsg: `unable to find stock with symbol ${this.state.stockName}` });
+
+        }
+
     }
 
     public async onStockChange(event: ChangeEvent<any>) {
@@ -39,6 +47,7 @@ class StocksListComponent extends Component<any, IStocksListState> {
         return (
             <Container>
                 <Form.Control name="stockName" plaintext placeholder="Enter Stock name" value={this.state.stockName} onChange={(e) => this.onStockChange(e)} />
+                <div className="text-danger">{this.state.errorMsg}</div>
                 {/* <FormText inputMode="search" onInput={(e) => this.state.}></FormText> */}
                 <Button disabled={!this.state.stockName} onClick={(e) => this.handleNewStockEvent(e)}>Add new Stock</Button>
                 <ListGroup>

@@ -63,7 +63,7 @@ export class App extends React.Component<any, { stocks: IStock[] }> {
                   <Button onClick={(e) => window.history.back()}>Back</Button>
                   <AboutComponent ></AboutComponent>
                 </Route>
-                <Route path="/stock/:stockId" render={(props) =>
+                <Route path="/stock/:stockSymbol" render={(props) =>
                   <>
                     <Button onClick={(e) => window.history.back()}>Back</Button>
                     <StockExplorer {...props.match.params} />
